@@ -6,6 +6,7 @@ import DesignSection from "./sections/DesignSection";
 import DisplaySection from "./sections/DisplaySection";
 import ProcessorSection from "./sections/ProcessorSection";
 import BatterySection from "./sections/BatterySection";
+import ColorSection from "./sections/ColorSection";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
       <DisplaySection />
       <ProcessorSection />
       <BatterySection />
-      {/* <PhoneModel /> */}
+      <ColorSection />
+      <PhoneModel />
     </>
   );
 }
