@@ -69,7 +69,6 @@ const DesignSection = () => {
           trigger: container.current,
           start: "top-=500 top",
           end: "bottom top",
-          markers: true,
           scrub: true,
         },
       })
