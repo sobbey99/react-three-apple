@@ -3,6 +3,10 @@ import { useLayoutEffect } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import { useGLTF } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Environment } from "@react-three/drei";
+import { Suspense } from "react";
+import { Model2 } from "../components/Scene2";
 
 const Section = styled.section`
   width: 100vw;
@@ -131,6 +135,16 @@ const ColorSection = () => {
       <Left ref={leftRef} />
       <Center ref={textRef}>Sierra Blue</Center>
       <Right ref={rightRef} />
+
+      <Canvas camera={{ fov: 6.5 }}>
+        <ambientLight intensity={1.25} />
+        <directionalLight intensity={0.2} />
+        <Suspense fallback={null}>
+          <Model2 />
+        </Suspense>
+
+        <Environment files="/clarens_night_01_4k.hdr" />
+      </Canvas>
     </Section>
   );
 };
