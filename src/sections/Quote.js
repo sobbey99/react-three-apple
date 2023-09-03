@@ -35,8 +35,7 @@ const Text = styled.p`
   position: relative;
   height: var(--fontmd);
   overflow: hidden;
-  font-family: var(--fontL), sans-serif;
-
+  font-weight: 300;
   span {
     position: absolute;
     transform: translateY(3rem);

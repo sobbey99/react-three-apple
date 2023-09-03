@@ -15,10 +15,11 @@ h1,h2,h3,h4,h5,h6 {
 
 
 @font-face {
-	font-family: "SourceLight";
-	src: local("SourceLight"), url(${fontLight}), format("truetype");
+	font-family: "Source Sans Pro";
+	src: local("Source Sans Prot"), url(${fontLight}), format("truetype");
 	font-display: swap;
 	font-style: normal;
+	font-weight: 300;
 }
 
 @font-face {
@@ -26,6 +27,7 @@ h1,h2,h3,h4,h5,h6 {
 	src: local("Source Sans Pro"), url(${fontRegular}), format("truetype");
 	font-display: swap;
 	font-style: normal;
+	font-weight: 400;
 }
 
 body {
