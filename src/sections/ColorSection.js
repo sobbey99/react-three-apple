@@ -1,14 +1,14 @@
-import { gsap } from "gsap";
-import { useEffect, useLayoutEffect } from "react";
-import { useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import gsap from "gsap";
+import React from "react";
+import { useRef, useLayoutEffect } from "react";
 import styled from "styled-components";
-import { useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
 import { Suspense } from "react";
-import { Model2 } from "../components/Scene2";
 import { useContext } from "react";
-import { ColorContext } from "../context/ColorContext";
+import { ColorContext } from "./../context/ColorContext";
+import { useEffect } from "react";
+import { Model2 } from "../components/Scene2";
 
 const Section = styled.section`
   width: 100vw;
@@ -23,19 +23,26 @@ const Section = styled.section`
 const Left = styled.div`
   width: 50%;
   height: 100%;
+
   display: flex;
   background-color: rgba(155, 181, 206, 0.8);
   position: relative;
-  transition: all 0.8 ease;
-`;
 
+  @media screen and (max-width: 48em) {
+    width: 100%;
+  }
+`;
 const Right = styled.div`
   width: 50%;
   height: 100%;
+
   display: flex;
   background-color: rgba(155, 181, 206, 0.4);
   position: relative;
-  transition: all 0.8s ease;
+
+  @media screen and (max-width: 48em) {
+    display: none;
+  }
 `;
 
 const Center = styled.div`
@@ -47,8 +54,12 @@ const Center = styled.div`
   transform: translate(-50%, -50%) rotate(-90deg);
   font-size: var(--fontxxl);
   text-transform: uppercase;
-  filter: brightness(0.55);
-  transition: all 0.8s ease;
+  filter: brightness(0.85);
+
+  @media screen and (max-width: 48em) {
+    top: 2rem;
+    transform: translate(-50%, 0%) rotate(0deg);
+  }
 `;
 
 const ColorSection = () => {
@@ -66,30 +77,30 @@ const ColorSection = () => {
 
     textElem.innerText = currentColor.text;
     textElem.style.color = currentColor.color;
-    rightElem.style.backgroundColor = `rgba(${currentColor.rgb}, 0.4)`;
-    leftElem.style.backgroundColor = `rgba(${currentColor.rgb}, 0.8)`;
+
+    rightElem.style.backgroundColor = `rgba(${currentColor.rgbColor}, 0.4)`;
+    leftElem.style.backgroundColor = `rgba(${currentColor.rgbColor}, 0.8)`;
   }, [currentColor]);
 
   useLayoutEffect(() => {
     let Elem = sectionRef.current;
 
-    let updateColor = (color, text, rgb) => {
+    let updateColor = (color, text, rgbColor) => {
       const colorObj = {
         color,
         text,
-        rgb,
+        rgbColor,
       };
-
       changeColorContext(colorObj);
     };
 
-    //pin the section
+    // pin the section
     gsap.to(Elem, {
       scrollTrigger: {
         trigger: Elem,
         start: "top top",
         end: `+=${Elem.offsetWidth + 1000}`,
-        scrub: true,
+        scrub: 1,
         pin: true,
         pinSpacing: true,
       },
@@ -101,7 +112,7 @@ const ColorSection = () => {
           trigger: Elem,
           start: "top top",
           end: `+=${Elem.offsetWidth + 1000}`,
-          scrub: true,
+          scrub: 1,
         },
       })
       .to(Elem, {
@@ -140,22 +151,26 @@ const ColorSection = () => {
         onReverseComplete: updateColor,
         onReverseCompleteParams: ["#215E7C", "Blue", "33, 94, 124"],
       });
+
+    return () => {
+      if (t2) t2.kill();
+    };
   }, []);
+
   return (
     <Section ref={sectionRef}>
       <Left ref={leftRef} />
-      <Center ref={textRef}>Sierra Blue</Center>
-      <Right ref={rightRef} />
-
-      <Canvas camera={{ fov: 6.5 }}>
-        <ambientLight intensity={1.25} />
-        <directionalLight intensity={0.2} />
-        <Suspense fallback={null}>
-          <Model2 />
-        </Suspense>
-
-        <Environment files="/clarens_night_01_4k.hdr" />
-      </Canvas>
+      <Center ref={textRef} />
+      <Right ref={rightRef}>
+        <Canvas camera={{ fov: 6.5 }}>
+          <ambientLight intensity={1.25} />
+          <directionalLight intensity={0.4} />
+          <Suspense fallback={null}>
+            <Model2 />
+          </Suspense>
+          {/* <OrbitControls /> */}
+        </Canvas>
+      </Right>
     </Section>
   );
 };

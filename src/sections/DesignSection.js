@@ -1,4 +1,5 @@
-import { gsap } from "gsap";
+import gsap from "gsap";
+import React from "react";
 import { useLayoutEffect } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
@@ -16,7 +17,6 @@ const Section = styled.section`
   background-color: var(--white);
   overflow: hidden;
 `;
-
 const TextContainer = styled.p`
   width: 100%;
   height: 50vh;
@@ -26,7 +26,6 @@ const TextContainer = styled.p`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-
   color: var(--dark);
 
   span {
@@ -35,18 +34,31 @@ const TextContainer = styled.p`
     font-weight: 600;
     text-transform: capitalize;
   }
-`;
 
+  @media screen and (max-width: 70em) {
+    span {
+      font-size: var(--fontxxxl);
+    }
+  }
+  @media screen and (max-width: 64em) {
+    span {
+      font-size: var(--fontxxl);
+    }
+  }
+  @media screen and (max-width: 48em) {
+    span {
+      font-size: var(--fontlg);
+    }
+  }
+`;
 const TextContainer2 = styled.p`
   width: 100%;
   height: 50vh;
-  z-index: 1;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-
   color: var(--dark);
 
   span {
@@ -54,6 +66,24 @@ const TextContainer2 = styled.p`
     width: 80%;
     font-weight: 600;
     text-transform: capitalize;
+    align-self: flex-end;
+    text-align: right;
+  }
+
+  @media screen and (max-width: 70em) {
+    span {
+      font-size: var(--fontxxl);
+    }
+  }
+  @media screen and (max-width: 64em) {
+    span {
+      font-size: var(--fontxl);
+    }
+  }
+  @media screen and (max-width: 48em) {
+    span {
+      font-size: var(--fontlg);
+    }
   }
 `;
 
@@ -63,20 +93,20 @@ const DesignSection = () => {
   const textTwo = useRef(null);
 
   useLayoutEffect(() => {
-    let tl = gsap
+    let t1 = gsap
       .timeline({
         scrollTrigger: {
           trigger: container.current,
           start: "top-=500 top",
           end: "bottom top",
-          scrub: true,
+          scrub: 1,
         },
       })
       .fromTo(textOne.current, { x: 0 }, { x: "10%" }, "key1")
       .fromTo(textTwo.current, { x: 0 }, { x: "-10%" }, "key1");
 
     return () => {
-      if (tl) tl.kill();
+      if (t1) t1.kill();
     };
   }, []);
 
@@ -85,6 +115,7 @@ const DesignSection = () => {
       <TextContainer ref={textOne}>
         <span>Flaw-less design with strong durability.</span>
       </TextContainer>
+
       <TextContainer2 ref={textTwo}>
         <span>Flat-edge design with toughest smartphone glass.</span>
       </TextContainer2>

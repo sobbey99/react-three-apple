@@ -8,7 +8,7 @@ export const ColorContextProvider = ({ children }) => {
   const [currentColor, setCurrentColor] = useState({
     color: "#9BB5CE",
     text: "Sierra Blue",
-    rgb: "155, 181, 206",
+    rgbColor: "155, 181, 206",
   });
 
   let changeColorContext = (colorObj) => {

@@ -1,4 +1,6 @@
-import { gsap } from "gsap";
+/* eslint-disable react-hooks/exhaustive-deps */
+import gsap from "gsap";
+import React from "react";
 import { useLayoutEffect } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
@@ -19,21 +21,39 @@ const Section = styled.section`
     align-self: flex-end;
     margin-right: 4rem;
     text-align: right;
-  }
 
+    @media screen and (max-width: 48em) {
+      margin-right: 1rem;
+    }
+  }
   & > *:nth-child(odd) {
     margin-left: 4rem;
+
+    @media screen and (max-width: 48em) {
+      margin-left: 1rem;
+    }
   }
 `;
-
 const MainTitle = styled.h1`
   font-size: var(--fontBig);
-  font-weight: 300;
 
   background-image: linear-gradient(-45deg, var(--gradient));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media screen and (max-width: 70em) {
+    font-size: var(--fontxxxl);
+  }
+  @media screen and (max-width: 64em) {
+    font-size: var(--fontxxl);
+  }
+  @media screen and (max-width: 48em) {
+    font-size: var(--fontxl);
+  }
+  @media screen and (max-width: 40em) {
+    font-size: var(--fontlg);
+  }
 `;
 
 const TextBlockRight = styled.div`
@@ -52,6 +72,10 @@ const TextBlockLeft = styled.div`
 const Title = styled.div`
   font-size: var(--fontlg);
   margin-bottom: 1rem;
+
+  @media screen and (max-width: 64em) {
+    font-size: var(--fontmd);
+  }
 `;
 
 const Text = styled.div`
@@ -59,26 +83,49 @@ const Text = styled.div`
   color: var(--greyLight);
   margin-bottom: 0.5rem;
   width: 55%;
-`;
 
+  @media screen and (max-width: 64em) {
+    width: 70%;
+  }
+  @media screen and (max-width: 48em) {
+    width: 100%;
+    font-size: var(--fontxxs);
+  }
+`;
 const TextContainer = styled.div`
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  transform: rotate(-25deg);
   align-items: center;
+  transform: rotate(-25deg);
   z-index: 1;
   margin-bottom: 4rem;
 `;
 
 const MovingText = styled.h1`
   font-size: var(--fontBig);
-  font-weight: 300;
+
   background-image: linear-gradient(-45deg, var(--gradient));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media screen and (max-width: 70em) {
+    font-size: var(--fontxxxl);
+  }
+  @media screen and (max-width: 64em) {
+    font-size: var(--fontxxl);
+  }
+  @media screen and (max-width: 48em) {
+    font-size: var(--fontxl);
+  }
+  @media screen and (max-width: 40em) {
+    font-size: var(--fontlg);
+  }
+  @media screen and (max-width: 30em) {
+    font-size: var(--fontmd);
+  }
 `;
 
 const DisplaySection = () => {
@@ -87,43 +134,40 @@ const DisplaySection = () => {
   const textTwo = useRef(null);
 
   useLayoutEffect(() => {
-    let tl = gsap
+    let t1 = gsap
       .timeline({
         scrollTrigger: {
           trigger: container.current,
           start: "top-=500 top",
           end: "bottom top",
-          scrub: true,
+          scrub: 1,
         },
       })
-      .fromTo(textOne.current, { x: 0 }, { x: "20%" }, "key1")
-      .fromTo(textTwo.current, { x: 0 }, { x: "-20%" }, "key1");
+      .fromTo(textOne.current, { x: 0 }, { x: "-20%" }, "key1")
+      .fromTo(textTwo.current, { x: 0 }, { x: "20%" }, "key1");
 
     return () => {
-      if (tl) tl.kill();
+      if (t1) t1.kill();
     };
   }, []);
+
   return (
     <Section>
       <MainTitle>
-        Immersive
-        <br />
-        Display
+        Immersive <br /> Display
       </MainTitle>
-
       <TextBlockRight>
         <Title>Super Ratine XDR Display</Title>
         <Text>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae animi
-          illo minus facere, ipsa iste quia eos dolorum veritatis neque!
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          Necessitatibus dignissimos ipsam.
         </Text>
       </TextBlockRight>
-
       <TextBlockLeft ref={container}>
         <Title>Big is better</Title>
         <Text>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae animi
-          illo minus facere, ipsa iste quia eos dolorum veritatis neque!
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          Necessitatibus dignissimos ipsam.
         </Text>
       </TextBlockLeft>
 

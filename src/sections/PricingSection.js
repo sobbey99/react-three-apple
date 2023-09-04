@@ -1,13 +1,16 @@
+import React from "react";
 import styled from "styled-components";
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls, useGLTF } from "@react-three/drei";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { Model3 } from "../components/Scene3";
+import { AdaptiveDpr, AdaptiveEvents, Environment } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { useRef } from "react";
 import { useContext } from "react";
-import { ColorContext } from "../context/ColorContext";
+import { ColorContext } from "./../context/ColorContext";
+import { useEffect } from "react";
 
-const Container = styled.section`
+const Container = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
@@ -22,12 +25,12 @@ const Section = styled.div`
   position: relative;
   z-index: 1;
 
-  background-color: #9bb5ce;
+  background-color: "#9BB5CE";
 `;
-
 const Phone = styled.div`
   width: 100%;
   height: 70%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,6 +50,10 @@ const Colors = styled.ul`
   left: 35%;
   top: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 64em) {
+    left: 10%;
+  }
 `;
 
 const Color = styled.li`
@@ -54,13 +61,13 @@ const Color = styled.li`
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+
   border-radius: 50%;
   background-color: ${(props) => props.color};
   margin: 0.5rem 0;
 
   border: 1px solid var(--dark);
 `;
-
 const Details = styled.div`
   width: 100%;
   display: flex;
@@ -69,19 +76,20 @@ const Details = styled.div`
   align-items: center;
 `;
 
-const SubTitle = styled.h2`
-  font-size: var(--fontmd);
-`;
 const Title = styled.h2`
   font-size: var(--fontxl);
   padding: 0.3rem;
+`;
+
+const SubTitle = styled.h2`
+  font-size: var(--fontmd);
+  font-family: var(--fontR);
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding-top: 1rem;
 `;
 
@@ -100,11 +108,11 @@ const Btn = styled.button`
   background-color: var(--blue);
   color: var(--white);
   cursor: pointer;
+
   &:hover {
     opacity: 0.7;
   }
 `;
-
 const BtnLink = styled.a`
   color: var(--blue);
   text-decoration: none;
@@ -127,16 +135,15 @@ const PricingSection = () => {
   const { currentColor, changeColorContext } = useContext(ColorContext);
 
   useEffect(() => {
-    sectionRef.current.style.backgroundColor = `rgba(${currentColor.rgb}, 0.4)`;
+    sectionRef.current.style.backgroundColor = `rgba(${currentColor.rgbColor},0.4)`;
   }, [currentColor]);
 
-  let updateColor = (color, text, rgb) => {
+  let updateColor = (color, text, rgbColor) => {
     const colorObj = {
       color,
       text,
-      rgb,
+      rgbColor,
     };
-
     changeColorContext(colorObj);
   };
 
@@ -144,15 +151,17 @@ const PricingSection = () => {
     <Container>
       <Section ref={sectionRef}>
         <Phone>
-          <IndicatorText>360&deg; &#x27F2;</IndicatorText>
+          <IndicatorText>360&deg; &#x27F2; </IndicatorText>
           <Canvas camera={{ fov: 14 }}>
             <ambientLight intensity={1} />
-            <directionalLight intensity={0.2} />
+            <directionalLight intensity={0.4} />
             <Suspense fallback={null}>
               <Model3 />
             </Suspense>
 
             <Environment files="/clarens_night_01_4k.hdr" />
+            <AdaptiveDpr pixelated />
+            <AdaptiveEvents />
             <OrbitControls enableZoom={false} />
           </Canvas>
 
@@ -189,13 +198,14 @@ const PricingSection = () => {
             />
           </Colors>
         </Phone>
+
         <Details>
           <SubTitle>iPhone</SubTitle>
           <Title>14 Pro Max</Title>
           <SubTitle>From $1099*</SubTitle>
           <ButtonContainer>
             <Btn>Buy</Btn>
-            <BtnLink href="#">Learn more &#x2192;</BtnLink>
+            <BtnLink href="#">Learn More &#x2192;</BtnLink>
           </ButtonContainer>
         </Details>
       </Section>
