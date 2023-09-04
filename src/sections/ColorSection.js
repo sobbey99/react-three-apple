@@ -1,5 +1,5 @@
 import { gsap } from "gsap";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import { useGLTF } from "@react-three/drei";
@@ -7,6 +7,8 @@ import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { Suspense } from "react";
 import { Model2 } from "../components/Scene2";
+import { useContext } from "react";
+import { ColorContext } from "../context/ColorContext";
 
 const Section = styled.section`
   width: 100vw;
@@ -55,21 +57,30 @@ const ColorSection = () => {
   const leftRef = useRef(null);
   const textRef = useRef(null);
 
-  const { materials } = useGLTF("/scene.gltf");
+  const { currentColor, changeColorContext } = useContext(ColorContext);
 
-  useLayoutEffect(() => {
-    let Elem = sectionRef.current;
+  useEffect(() => {
     let rightElem = rightRef.current;
     let leftElem = leftRef.current;
     let textElem = textRef.current;
 
-    let updateColor = (color, text, rgbColor) => {
-      materials.Body.color.set(color);
+    textElem.innerText = currentColor.text;
+    textElem.style.color = currentColor.color;
+    rightElem.style.backgroundColor = `rgba(${currentColor.rgb}, 0.4)`;
+    leftElem.style.backgroundColor = `rgba(${currentColor.rgb}, 0.8)`;
+  }, [currentColor]);
 
-      textElem.innerText = text;
-      textElem.style.color = color;
-      rightElem.style.backgroundColor = `rgba(${rgbColor}, 0.4)`;
-      leftElem.style.backgroundColor = `rgba(${rgbColor}, 0.8)`;
+  useLayoutEffect(() => {
+    let Elem = sectionRef.current;
+
+    let updateColor = (color, text, rgb) => {
+      const colorObj = {
+        color,
+        text,
+        rgb,
+      };
+
+      changeColorContext(colorObj);
     };
 
     //pin the section
